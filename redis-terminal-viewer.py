@@ -3,7 +3,7 @@ from textual.widgets import Footer
 
 
 class RedisTerminalViewer(App):
-    """A Textual app to manage stopwatches."""
+    """A Textual app to view Redis Database."""
 
     BINDINGS = [("d", "toggle_dark", "Toggle dark mode")]
 
