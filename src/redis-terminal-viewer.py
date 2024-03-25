@@ -1,6 +1,8 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Footer
 
+from components.databases import Databases
+
 
 class RedisTerminalViewer(App):
     """A Textual app to view Redis Database."""
@@ -10,6 +12,7 @@ class RedisTerminalViewer(App):
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
         yield Footer()
+        yield Databases()
 
     def action_toggle_dark(self) -> None:
         """An action to toggle dark mode."""
