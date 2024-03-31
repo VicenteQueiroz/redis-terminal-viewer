@@ -11,33 +11,67 @@ class LabelledInput(Widget):
     }
     """
 
-    def __init__(self, label):
+    def __init__(self, label: str, placeholder: str = ""):
         super().__init__()
         self.label = label
+        self.placeholder = placeholder
 
     def compose(self):
+        self.input = Input(placeholder=self.placeholder.lower())
         yield Label(f"{self.label}:")
-        yield Input(placeholder=self.label.lower())
+        yield self.input
 
 class AddDatabaseScreen(ModalScreen):
     """Screen with a dialog to add a Redis Database."""
 
+    DEFAULT_CSS = """
+    AddDatabaseScreen {
+        align: center middle;
+    }
+
+    #modal {
+        # grid-size: 3 2;
+        # grid-gutter: 1 2;
+        # grid-rows: 1fr 3;
+        # padding: 0 1;
+        width: 80;
+        # height: 11;
+        border: thick $background 80%;
+        background: $surface;
+    }
+    """
+
+    # CSS_PATH = "../styles.tcss"
+
     def compose(self) -> ComposeResult:
-        yield LabelledInput("Host")
-        yield LabelledInput("Port")
-        yield LabelledInput("Database Alias")
-        yield LabelledInput("Username")
-        yield LabelledInput("Password")
-        # yield Button("Test Connection") // TODO
-        yield Button("Cancel", variant="error", id="quit")
-        yield Button("Apply Changes", variant="primary", id="cancel")
+        self.host = LabelledInput("Host")
+        self.port = LabelledInput("Port")
+        self.db_alias = LabelledInput("Database Alias")
+        self.username = LabelledInput("Username")
+        self.password = LabelledInput("Password")
+
+        
+        yield Grid(
+            self.host,
+            self.port,
+            self.db_alias,
+            self.username,
+            self.password,
+            # yield Button("Test Connection") // TODO
+            Button("Cancel", variant="error", id="cancel"),
+            Button("Apply Changes", variant="primary", id="apply_changes"),
+            id="modal"
+        )
+
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "quit":
-            self.app.exit()
-        else:
+        if event.button.id == "cancel":
             self.app.pop_screen()
-
+        elif event.button.id == "apply_changes":
+            self.dismiss({"host": self.host.input.value, "port": self.port.input.value,
+                          "db_alias": self.db_alias.input.value, "username": self.username.input.value, 
+                          "password": self.password.input.value})
+    
 
 class Databases(Static):
     """A Textual app to view Redis Database."""

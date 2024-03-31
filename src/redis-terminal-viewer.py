@@ -23,7 +23,12 @@ class RedisTerminalViewer(App):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Event handler called when a button is pressed."""
         print("Add database!")
-        self.push_screen(AddDatabaseScreen())
+
+        def add_database(data) -> None:
+            print("data from modal: ", data)
+
+        self.push_screen(AddDatabaseScreen(), add_database)
+        # self.notify("Notify test")
 
     def action_toggle_dark(self) -> None:
         """An action to toggle dark mode."""
