@@ -44,8 +44,8 @@ class AddDatabaseScreen(ModalScreen):
     # CSS_PATH = "../styles.tcss"
 
     def compose(self) -> ComposeResult:
-        self.host = LabelledInput("Host")
-        self.port = LabelledInput("Port")
+        self.host = LabelledInput("Host", "127.0.0.1")
+        self.port = LabelledInput("Port", "6379")
         self.db_alias = LabelledInput("Database Alias")
         self.username = LabelledInput("Username")
         self.password = LabelledInput("Password")
